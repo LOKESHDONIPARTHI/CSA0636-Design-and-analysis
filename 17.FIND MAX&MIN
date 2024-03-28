@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+int compareIntegers(const void* a, const void* b) 
+{
+    return (*(int*)a - *(int*)b);
+}
+
+void findMinMax(int arr[], int size, int M, int N, int* MMax, int* NMin) 
+{
+    if (M <= 0 || N <= 0 || M > size || N > size) 
+	{
+        printf("Invalid input\n");
+        exit(1);
+    }
+    qsort(arr, size, sizeof(int), compareIntegers);
+    *MMax = arr[size - M];
+    *NMin = arr[N - 1];    
+}
+void calculateSumDiff(int MMax, int NMin, int* sum, int* diff) 
+{
+    *sum = MMax + NMin;
+    *diff = MMax - NMin;
+}
+int main() 
+{
+    int size, M, N;
+    printf("Enter the size of the array: ");
+    scanf("%d", &size);
+    int* arr = (int*)malloc(size * sizeof(int));
+    if (arr == NULL) {
+        printf("Memory allocation failed\n");
+        return 1;
+    }
+    printf("Enter %d elements for the array:\n", size);
+    for (int i = 0; i < size; i++) {
+        scanf("%d", &arr[i]);
+    }
+    printf("Enter M and N: ");
+    scanf("%d %d", &M, &N);
+    int MMax, NMin, sum, diff;
+    findMinMax(arr, size, M, N, &MMax, &NMin);
+    calculateSumDiff(MMax, NMin, &sum, &diff);
+    printf("M-th maximum number: %d\n", MMax);
+    printf("N-th minimum number: %d\n", NMin);
+    printf("Sum: %d\n", sum);
+    printf("Difference: %d\n", diff);
+    free(arr);
+    return 0;
+}
